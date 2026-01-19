@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="ja">
 
 <head>
@@ -286,7 +286,7 @@
         const player = {
             x: 0, y: 0,
             width: 100, height: 85,
-            speed: 4,
+            speed: 6,
             bullets: [],
             fireRate: 200,
             lastFire: 0,
@@ -581,7 +581,7 @@
                 y: -size,
                 size: size,
                 type: enemyType,
-                speed: (1.5 + level * 0.15 + Math.random()) * 0.75,
+                speed: (1.5 + level * 0.15 + Math.random()) * 0.5625,
                 health: health,
                 maxHealth: health,
                 score: (enemyType + 1) * 100
@@ -779,8 +779,4 @@
     </script>
 </body>
 
-
 </html>
-
-
-
