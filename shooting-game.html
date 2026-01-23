@@ -81,44 +81,22 @@
         }
 
         .joystick-area {
-            width: 120px;
-            height: 120px;
-            position: relative;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            top: 0;
+            left: 0;
+            z-index: 150;
             pointer-events: auto;
         }
 
-        .joystick-base {
-            width: 100px;
-            height: 100px;
-            background: rgba(255, 255, 255, 0.15);
-            border: 2px solid rgba(255, 255, 255, 0.3);
-            border-radius: 50%;
-            position: absolute;
-            bottom: 10px;
-            left: 10px;
-        }
-
+        .joystick-base,
         .joystick-stick {
-            width: 50px;
-            height:50px;
-            background: #00d4ff;
-            border-radius: 50%;
-            position: absolute;
-            bottom: 37px;
-            left: 37px;
+            display: none;
         }
 
         .fire-button {
-            width: 80px;
-            height: 80px;
-            background: #ff6b6b;
-            border: none;
-            border-radius: 50%;
-            color: white;
-            font-size: 12px;
-            font-weight: bold;
-            pointer-events: auto;
-            margin-bottom: 10px;
+            display: none;
         }
 
         .overlay {
@@ -227,11 +205,12 @@
 
         <canvas id="gameCanvas"></canvas>
 
+        <div class="joystick-area" id="joystickArea">
+            <div class="joystick-base"></div>
+            <div class="joystick-stick" id="joystickStick"></div>
+        </div>
+
         <div class="touch-controls" id="touchControls">
-            <div class="joystick-area" id="joystickArea">
-                <div class="joystick-base"></div>
-                <div class="joystick-stick" id="joystickStick"></div>
-            </div>
             <button class="fire-button" id="fireButton">FIRE</button>
         </div>
 
@@ -286,7 +265,7 @@
         const player = {
             x: 0, y: 0,
             width: 100, height: 85,
-            speed: 8,
+            speed: 6,
             bullets: [],
             fireRate: 200,
             lastFire: 0,
@@ -412,8 +391,9 @@
             const touch = e.touches[0];
             const rect = joystickArea.getBoundingClientRect();
             joystick.active = true;
-            joystick.startX = rect.left + 60;
-            joystick.startY = rect.top + 60;
+            isFiring = true;
+            joystick.startX = touch.clientX;
+            joystick.startY = touch.clientY;
         }, { passive: false });
 
         joystickArea.addEventListener('touchmove', (e) => {
@@ -436,6 +416,7 @@
         joystickArea.addEventListener('touchend', (e) => {
             e.preventDefault();
             joystick.active = false;
+            isFiring = false;
             joystick.deltaX = 0;
             joystick.deltaY = 0;
             joystickStick.style.transform = 'translate(0, 0)';
@@ -581,7 +562,7 @@
                 y: -size,
                 size: size,
                 type: enemyType,
-                speed: (1.5 + level * 0.15 + Math.random()) * 0.2562,
+                speed: (1.5 + level * 0.15 + Math.random()) * 0.5625,
                 health: health,
                 maxHealth: health,
                 score: (enemyType + 1) * 100
@@ -780,14 +761,3 @@
 </body>
 
 </html>
-
-
-
-
-
-
-
-
-
-
-
